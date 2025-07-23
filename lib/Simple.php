@@ -168,20 +168,23 @@ class Simple
    */
   public function __construct ($conf, $keep_config=false)
   {
-    if (isset($conf['saveConf']))
-      $keep_config = $conf['saveConf'];
-    elseif (isset($conf['saveOpts']))
-      $keep_config = $conf['saveOpts'];
-
-    $noConnect = isset($conf['noConnect']) ? $conf['noConnect'] : false;
+    #error_log("PDO:Simple(conf, $keep_config): ".json_encode($conf));
 
     if (is_string($conf))
     {
       $conf = $this->load_conf($conf);
+      #error_log("PDO:Simple()+load_conf: ".json_encode($conf));
     }
 
     if (is_array($conf) && isset($conf['dsn']))
     {
+      if (isset($conf['saveConf']))
+        $keep_config = $conf['saveConf'];
+      elseif (isset($conf['saveOpts']))
+        $keep_config = $conf['saveOpts'];
+
+      $noConnect = isset($conf['noConnect']) ? $conf['noConnect'] : false;
+
       if (!$noConnect)
         $this->dbconnect($conf);
       
